@@ -36,18 +36,18 @@ class RegisterModelForm(forms.ModelForm):
     confirm_password = forms.CharField(max_length=255)
     class Meta:
         model = User
-        fields = ('email', 'password','username')
+        fields = ['username','email', 'password']
 
     def clean_email(self):
         email= self .data.get('email').lower()
         if User.objects.filter(email=email).exists():
-            raise forms.ValidationError('Email already exists')
+            raise forms.ValidationError(f'The{email} email already exists')
         return email
 
 
     def clean_password(self):
-        password = self.cleaned_data.get('password')
-        confirm_password = self.cleaned_data.get('confirm_password')
+        password = self.data.get('password')
+        confirm_password = self.data.get('confirm_password')
         if password != confirm_password:
             raise forms.ValidationError('Password  did not match')
         return password
