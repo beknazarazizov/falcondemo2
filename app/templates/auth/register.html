@@ -84,24 +84,34 @@
                   </div>
                   <div class="col-md-7 d-flex flex-center">
                     <div class="p-4 p-md-5 flex-grow-1">
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endif %}
                       <h3>Register</h3>
-                      <form>
+                      <form method="post" action="">
+                          {% csrf_token %}
                         <div class="mb-3">
-                          <label class="form-label" for="card-name">Name</label>
-                          <input class="form-control" type="text" autocomplete="on" id="card-name" />
+                          <label class="form-label" for="card-name">Username</label>
+                          <input class="form-control" type="text" name="username" autocomplete="on" id="card-name" />
                         </div>
                         <div class="mb-3">
                           <label class="form-label" for="card-email">Email address</label>
-                          <input class="form-control" type="email" autocomplete="on" id="card-email" />
+                          <input class="form-control" type="email" name="email" autocomplete="on" id="card-email" />
                         </div>
                         <div class="row gx-2">
                           <div class="mb-3 col-sm-6">
                             <label class="form-label" for="card-password">Password</label>
-                            <input class="form-control" type="password" autocomplete="on" id="card-password" />
+                            <input class="form-control" type="password" name="password" autocomplete="on" id="card-password" />
                           </div>
                           <div class="mb-3 col-sm-6">
                             <label class="form-label" for="card-confirm-password">Confirm Password</label>
-                            <input class="form-control" type="password" autocomplete="on" id="card-confirm-password" />
+                            <input class="form-control" type="password" name="confirm pssvord" autocomplete="on" id="card-confirm-password" />
                           </div>
                         </div>
                         <div class="form-check">

@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 
 from customer.forms import LoginForm
-
+from customer.forms import RegisterModelForm
 
 def login_page(request):
     if request.method == 'POST':
@@ -27,4 +27,16 @@ def logout_page(request):
     return render(request,'auth/logout.html')
 
 def register(request):
-    return render(request, 'auth/register.html')
+    form=RegisterModelForm()
+    if request.method == 'POST':
+        form=RegisterModelForm(request.POST)
+        if form.is_valid():
+            user=form.save(commit=False)
+            password=form.cleaned_data['password']
+            user.set_password(password)
+            user.save()
+            login(request, user)
+            return redirect('customers')
+    else:
+        form=RegisterModelForm()
+    return render(request, 'auth/register.html', {'form' : form } )

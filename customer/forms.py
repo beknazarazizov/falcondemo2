@@ -32,12 +32,22 @@ class LoginForm(forms.Form):
         return password
 
 
-# class RegisterModelForm(forms.ModelForm):
-#     confirm_password  = forms.CharField()
-#     class Meta:
-#         model = User
-#         fields = ('email', 'password')
-#
-#     def clean_confirm_password(self):
-#         pass
-#
+class RegisterModelForm(forms.ModelForm):
+    confirm_password  = forms.CharField(max_length=255)
+    class Meta:
+        model = User
+        fields = ('email', 'password','username')
+
+    def clean_email(self):
+        email= self .data.get('email').lower()
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('Email already exists')
+        return email
+
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        confirm_password = self.cleaned_data.get('confirm_password')
+        if password != confirm_password:
+            raise forms.ValidationError('Password  did not match')
+        return password
