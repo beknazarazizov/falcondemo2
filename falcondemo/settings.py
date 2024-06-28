@@ -33,8 +33,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'baton'
-    'django.contrib.admin',
+    # 'baton'
+    # 'django.contrib.admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'customer.apps.CustomerConfig',
-    'baton.autodiscover',
+    # 'baton.autodiscover',
 ]
 
 MIDDLEWARE = [

@@ -33,7 +33,7 @@ class LoginForm(forms.Form):
 
 
 class RegisterModelForm(forms.ModelForm):
-    confirm_password  = forms.CharField(max_length=255)
+    confirm_password = forms.CharField(max_length=255)
     class Meta:
         model = User
         fields = ('email', 'password','username')

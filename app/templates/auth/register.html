@@ -83,16 +83,18 @@
                     </div>
                   </div>
                   <div class="col-md-7 d-flex flex-center">
-                    <div class="p-4 p-md-5 flex-grow-1">
-                        {% if form.errors %}
-                            {% for field in form %}
-                                {% for error in field.errors %}
-                                    <div class="alert alert-danger">
-                                        <strong>{{ error|escape }}</strong>
-                                    </div>
+                      <div>
+                            {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-danger">
+                                            <strong>{{ error|escape }}</strong>
+                                        </div>
+                                    {% endfor %}
                                 {% endfor %}
-                            {% endfor %}
-                        {% endif %}
+                            {% endif %}
+                      </div>
+                    <div class="p-4 p-md-5 flex-grow-1">
                       <h3>Register</h3>
                       <form method="post" action="">
                           {% csrf_token %}
@@ -111,7 +113,7 @@
                           </div>
                           <div class="mb-3 col-sm-6">
                             <label class="form-label" for="card-confirm-password">Confirm Password</label>
-                            <input class="form-control" type="password" name="confirm pssvord" autocomplete="on" id="card-confirm-password" />
+                            <input class="form-control" type="password" name="confirm_password" autocomplete="on" id="card-confirm-password" />
                           </div>
                         </div>
                         <div class="form-check">

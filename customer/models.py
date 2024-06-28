@@ -14,8 +14,8 @@ from customer.managers import CustomUserManager
 class Customer(models.Model):
     full_name = models.CharField(max_length=155, null=True, blank=True)  # verbose_name="To'liq ismi")
     email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=20)
-    address = models.CharField(max_length=150)
+    phone_number = models.CharField(max_length=20,null=True, blank=True)
+    address = models.CharField(max_length=150, null=True, blank=True)
     joined = models.DateTimeField(default=datetime.now())
     image = models.ImageField(upload_to='customer/', null=True, blank=True)
 
