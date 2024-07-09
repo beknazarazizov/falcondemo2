@@ -1,10 +1,16 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 
-from app.forms import ProductForm, ProductModelForm
+from app.forms import ProductModelForm
 from app.models import Product
+from customer.models import Customer
 
 
 # Create your views here.
+
+
+
+
 
 
 def index(request):
