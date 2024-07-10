@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from customer.forms import CustomerModelForm
 from customer.models import Customer
-
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 
@@ -15,8 +15,20 @@ def customers(request):
             Q(full_name__icontains=search_query) | Q(address__icontains=search_query))
     else:
         customer_list = Customer.objects.all()
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(customer_list, 10)
+    try:
+        paje_obj = paginator.page(page)
+    except PageNotAnInteger:
+        paje_obj = paginator.page(1)
+    except EmptyPage:
+        paje_obj = paginator.page(paginator.num_pages)
+
+
     context = {
-        'customer_list': customer_list,
+        'paje_obj': paje_obj
     }
     return render(request, 'customer/customer-list.html', context)
 

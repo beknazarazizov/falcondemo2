@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from app.forms import ProductModelForm
 from app.models import Product
@@ -14,11 +15,24 @@ from customer.models import Customer
 
 
 def index(request):
-    products = Product.objects.all().order_by('-id')[:4]
+    products = Product.objects.all().order_by('-id')
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(products, 4)
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+
+
     context = {
-        'products': products
+        'products': products,
+        'page_obj': page_obj
+
     }
-    return render(request, 'app/index.html', context)
+    return render(request, 'app/index.html',context)
 
 
 def product_detail(request, product_id):
