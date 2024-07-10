@@ -9,27 +9,27 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def customers(request):
+    customers = Customer.objects.all().order_by('id')
     search_query = request.GET.get('search')
     if search_query:
-        customer_list = Customer.objects.filter(
+        customers = Customer.objects.filter(
             Q(full_name__icontains=search_query) | Q(address__icontains=search_query))
-    else:
-        customer_list = Customer.objects.all()
 
     page = request.GET.get('page', 1)
 
-    paginator = Paginator(customer_list, 10)
+    paginator = Paginator(customers, 5)
     try:
-        paje_obj = paginator.page(page)
+        page_obj = paginator.page(page)
     except PageNotAnInteger:
-        paje_obj = paginator.page(1)
+        page_obj = paginator.page(1)
     except EmptyPage:
-        paje_obj = paginator.page(paginator.num_pages)
+        page_obj = paginator.page(paginator.num_pages)
 
 
     context = {
-        'paje_obj': paje_obj
-    }
+        'page_obj': page_obj,
+        'search_query': search_query,
+        'customers': customers }
     return render(request, 'customer/customer-list.html', context)
 
 

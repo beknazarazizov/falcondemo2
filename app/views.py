@@ -28,7 +28,6 @@ def index(request):
 
 
     context = {
-        'products': products,
         'page_obj': page_obj
 
     }
