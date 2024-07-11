@@ -119,7 +119,6 @@
                                     <div class="avatar avatar-l status-online me-2">
                                         <img class="rounded-circle" src="{% static  'assets/img/team/1.jpg' %}"
                                              alt=""/>
-
                                     </div>
                                     <div class="flex-1">
                                         <h6 class="mb-0 title">Anna Karinina</h6>
@@ -315,6 +314,10 @@
                                                  aria-expanded="false">
                     <div class="avatar avatar-xl">
                         <img class="rounded-circle" src="{% static  'assets/img/team/3-thumb.png' %}" alt=""/>
+                        {% if user.is_authenticated %}
+                            {{ user.pretty_split_by_email }}
+                        {% endif %}
+
 
                     </div>
                 </a>
@@ -375,10 +378,19 @@
                             <button class="btn btn-falcon-default btn-sm mx-2" type="button"><span
                                     class="fas fa-filter" data-fa-transform="shrink-3 down-2"></span><span
                                     class="d-none d-sm-inline-block ms-1">Filter</span></button>
-                            <button class="btn btn-falcon-default btn-sm" type="button"><span
+                          <div>  <form action="{% url 'export_data' %}">
+                                <select id="format" name="format">
+                                    <option value="none" selected>...</option>
+                                    <option value="json">json</option>
+                                    <option value="xlsx">xlsx</option>
+                                    <option value="csv">csv</option>
+                                </select>
+                            <button class="btn btn-falcon-default btn-sm" type="submit"><span
                                     class="fas fa-external-link-alt"
                                     data-fa-transform="shrink-3 down-2"></span><span
                                     class="d-none d-sm-inline-block ms-1">Export</span></button>
+                            </form>
+                              </div>
                         </div>
                     </div>
                 </div>

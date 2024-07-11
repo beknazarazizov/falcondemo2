@@ -1,4 +1,8 @@
+import csv
+import json
+
 from django.contrib import messages
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from customer.forms import CustomerModelForm
@@ -73,3 +77,30 @@ def edit_customer(request, pk):
         'form': form,
     }
     return render(request, 'customer/update-customer.html', context)
+
+
+def export_data(request):
+    format = request.GET.get('format', 'csv')
+    if format == 'csv':
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=customers.csv'
+        writer = csv.writer(response)
+        writer.writerow(['Id', 'Full Name', 'Email', 'Phone Number', 'Address'])
+        for customer in Customer.objects.all():
+            writer.writerow([customer.id, customer.full_name, customer.email, customer.phone_number, customer.address])
+
+
+    elif format == 'json':
+        response = HttpResponse(content_type='application/json')
+        data = list(Customer.objects.all().values('full_name', 'email', 'phone_number', 'address'))
+        # response.content = json.dumps(data, indent=4)
+        response.write(json.dumps(data, indent=4))
+        response['Content-Disposition'] = 'attachment; filename=customers.json'
+    elif format == 'xlsx':
+        pass
+
+    else:
+        response = HttpResponse(status=404)
+        response.content = 'Bad request'
+
+    return response

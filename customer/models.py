@@ -43,3 +43,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    @property
+    def pretty_split_by_email(self):
+        return self.email.split('@')[0]
