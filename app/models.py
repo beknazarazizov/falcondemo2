@@ -27,7 +27,7 @@ class Product(models.Model):
             attributes.append({
                 'attribute_key':pa.attribute.key_name,
                 'attribute_value':pa.attribute_value.value_name
-            }) # [ {},{},{}]
+            }) # [ {},{},{} {}]
         return attributes
 
     @property
