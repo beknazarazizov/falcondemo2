@@ -1,6 +1,6 @@
 from django.urls import path
 
-from customer.views.auth import login_page, logout_page, register
+from customer.views.auth import login_page, logout_page, register, SendEmailView
 from customer.views.customers import CustomersTemplateView, AddCustomerTemplateView,DeleteCustomerView, EditCustomerView, export_data
 
 urlpatterns = [
@@ -13,5 +13,6 @@ urlpatterns = [
     path('logout-page/',logout_page,name='logout'),
     path('register/',register,name='register'),
     path('export-data/', export_data, name='export_data'),
+    path('send-email/', SendEmailView.as_view(), name='send_email'),
 
 ]
