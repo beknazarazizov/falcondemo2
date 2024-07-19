@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'falcondemo.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'falcon',
         'USER': 'postgres',
         'PASSWORD': 5760,
@@ -135,10 +135,10 @@ import os
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT= os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT=os.path.join(BASE_DIR,'app/media')
+MEDIA_ROOT = os.path.join(BASE_DIR,'app/media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
