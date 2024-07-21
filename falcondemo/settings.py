@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'app',
     'customer.apps.CustomerConfig',
     'adminsortable2',
+    'social_django',
     # 'baton.autodiscover',
 ]
 
@@ -154,3 +155,13 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'beknazarazizov0213@gmail.com'
 EMAIL_HOST_PASSWORD = 'ekzl ublq pnrf rwtp'
 
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2',
+]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1039253965699-etk90psmhg5v2hc9t1q8eeaq14maq1o8.apps.googleusercontent.com'  # Google Client ID
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Google Client Secret
+
+LOGIN_REDIRECT_URL = '/customer/customer-list'

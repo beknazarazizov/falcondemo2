@@ -1,7 +1,7 @@
 from django.urls import path
 
 import customer.views.auth
-from customer.views.auth import login_page, logout_page, register_page, SendEmailView
+from customer.views.auth import login_page, logout_page, register_page, SendEmailView,verify_email_done
 from customer.views.customers import CustomersTemplateView, AddCustomerTemplateView,DeleteCustomerView, EditCustomerView, export_data
 
 urlpatterns = [
@@ -15,6 +15,8 @@ urlpatterns = [
     path('register/',register_page,name='register'),
     path('export-data/', export_data, name='export_data'),
     path('send-email/', SendEmailView.as_view(), name='send_email'),
-    path('activate/<uidb64>/<token>/',customer.views.auth.activate, name='activate')
+    path('activate/<uidb64>/<token>/',customer.views.auth.activate, name='activate'),
+    path('verify_email_done/',verify_email_done,name='verify_email_done'),
+
 
 ]

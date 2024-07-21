@@ -12,7 +12,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
 from django.views.generic import FormView
-from customer.models import CustomUserManager
+from customer.models import CustomUserManager, User
 
 from customer.forms import LoginForm, EmailForm
 from customer.forms import RegisterModelForm
@@ -48,8 +48,8 @@ def logout_page(request):
 def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        user = CustomUserManager.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, CustomUserManager.DoesNotExist):
+        user =User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
     if user is not None and account_activation_token.check_token(user, token):
@@ -65,7 +65,7 @@ def activate(request, uidb64, token):
 
 def activate_email(request, user, to_email):
     subject = 'Activate your account'
-    message = render_to_string('authentication/template_activate_account.html', {
+    message = render_to_string('auth/template_activate_account.html', {
         'user': user.username,
         'domain': get_current_site(request).domain,
         'uid': urlsafe_base64_encode(force_bytes(user.id)),
@@ -82,20 +82,58 @@ def activate_email(request, user, to_email):
         messages.error(request, f'Sorry, there was an error sending the activation email: {str(e)}')
 
 
+
 def register_page(request):
     if request.method == 'POST':
         form = RegisterModelForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
             user.is_active = False
+
+            user.set_password(password)
             user.save()
-            activate_email(request, user, to_email=form.cleaned_data['email'])
-            return redirect('customers')
+
+            current_site = get_current_site(request)
+
+            subject = "Verify Email"
+            message = render_to_string('email/verify_email_message.html', {
+                'request': request,
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            email = EmailMessage(subject, message, to=[email])
+            email.content_subtype = 'html'
+
+            email.send()
+            # login(request, user)
+            return redirect('verify_email_done')
+
+        # send
 
     else:
         form = RegisterModelForm()
 
     return render(request, 'auth/register.html', {'form': form})
+
+
+# def register_page(request):
+#     if request.method == 'POST':
+#         form = RegisterModelForm(request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.is_active = False
+#             user.save()
+#             activate_email(request, user, to_email=form.cleaned_data['email'])
+#             return redirect('customers')
+#
+#     else:
+#         form = RegisterModelForm()
+#
+#     return render(request, 'auth/register.html', {'form': form})
 
 
 # def register(request):
@@ -183,3 +221,26 @@ class SendEmailView(View):
 
         context = {'form': form}
         return render(request, 'app/send-email.html', context)
+
+def verify_email_confirm(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+        print('-------------------------------')
+        print(user)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        messages.success(request, 'Your email has been verified.')
+        return redirect('customers')
+    else:
+        messages.warning(request, 'The link is invalid.')
+
+    return render(request, 'email/verify_email_confirm.html')
+
+
+def verify_email_done(request):
+    return render(request, 'email/verify_email_done.html')
