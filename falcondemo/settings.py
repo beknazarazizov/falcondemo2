@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'customer.apps.CustomerConfig',
     'adminsortable2',
     'social_django',
+     'django_extensions',
+
     # 'baton.autodiscover',
 ]
 
@@ -159,9 +161,19 @@ EMAIL_HOST_PASSWORD = 'ekzl ublq pnrf rwtp'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
 ]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1039253965699-etk90psmhg5v2hc9t1q8eeaq14maq1o8.apps.googleusercontent.com'  # Google Client ID
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Google Client Secret
 
+
+
+
+SOCIAL_AUTH_FACEBOOK_OAUTH2_KEY = '1384333275566337' # Facebook App ID
+SOCIAL_AUTH_FACEBOOK_OAUTH2_SECRET = '76111c6214f8b9752a94427a6722c24d' # Facebook App Secret
+
+
 LOGIN_REDIRECT_URL = '/customer/customer-list'
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
