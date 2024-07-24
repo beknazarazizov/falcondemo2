@@ -156,22 +156,30 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'beknazarazizov0213@gmail.com'
 EMAIL_HOST_PASSWORD = 'ekzl ublq pnrf rwtp'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
 ]
 
+#gooogle
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1039253965699-etk90psmhg5v2hc9t1q8eeaq14maq1o8.apps.googleusercontent.com'  # Google Client ID
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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' # Google Client Secret
 
 
 
-
+#facebook
 SOCIAL_AUTH_FACEBOOK_OAUTH2_KEY = '1384333275566337' # Facebook App ID
-SOCIAL_AUTH_FACEBOOK_OAUTH2_SECRET = '76111c6214f8b9752a94427a6722c24d' # Facebook App Secret
+SOCIAL_AUTH_FACEBOOK_OAUTH2_SECRET = '_aVf36YspIAsiBN2XvpB1d_YzlSKS7LR4X5Hpq4gnfki6GmwCf' # Facebook App Secret
+
+
+##Tvitter
+SOCIAL_AUTH_TWITTER_KEY = 'mVGp9b3LGOo27MhTvAKPRDzag' # Twitter API Key
+SOCIAL_AUTH_TWITTER_SECRET = 'NwzP15My7jFsAIEZK09Vc2AaCfu5WxzEY9FLyDn6p6j1NLEhgW' # Twitter API Secret
 
 
 LOGIN_REDIRECT_URL = '/customer/customer-list'
