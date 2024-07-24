@@ -27,7 +27,11 @@ def product_post_save(sender, instance,created, **kwargs):
 
 @receiver(pre_delete, sender=Product)
 def product_delete(sender, instance, **kwargs):
-    file_path = os.path.join(BASE_DIR, 'app/delete_products/', f'product_{instance.id}.json')
+    directory = 'app/delete_products/'
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    file_path = os.path.join(BASE_DIR/directory,'product_{instance.id}.json')
 
 
     product_data = {
@@ -37,7 +41,7 @@ def product_delete(sender, instance, **kwargs):
         'description': instance.description
     }
 
-    with open( file_path, mode='w') as file_json:
+    with open(file_path, mode='w') as file_json:
         json.dump(product_data, file_json, indent=4)
 
     print(f'{instance.name} is deleted')

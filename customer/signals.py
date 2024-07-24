@@ -9,7 +9,7 @@ from customer.models import Customer
 
 @receiver(pre_delete, sender=Customer)
 def customers_pre_delete(sender, instance, **kwargs):
-    directory = 'app/deleted/customers'
+    directory = 'customer/deleted_customers'
     if not os.path.exists(directory):
         os.makedirs(directory)
 
